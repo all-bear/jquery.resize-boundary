@@ -19,7 +19,7 @@
         $(document).ready(cb);
       },
       getWindowWidth: function () {
-        return $window.width()
+        return $window.width();
       },
       resize: function (cb) {
         $window.resize(cb);
@@ -29,7 +29,7 @@
           resizeBoundary: publicFunctions
         });
       }
-    }
+    };
   })(jQuery);
 
   /*
