@@ -1,7 +1,9 @@
 /*
  * Using:
  *
- * $.fn.resizeBoundary.addBoundary({from: fromPx, to: toPx}, cb); - cb will be called once when window size become in fromPx, toPx boundary
+ * $.fn.resizeBoundary.addBoundary({from: fromPx, to: toPx}, cb, destroyCb);
+ * - cb will be called once when window size become in fromPx, toPx boundary
+ * - destroyCb will be called once when window size become not in fromPx, toPx boundary
  * $.fn.resizeBoundary.matchBoundaries() - call boundary cb based on current window width
  *
  * Copyright (c) 2016 Oleh Birjukov
