@@ -49,17 +49,26 @@
 
     var boundaries = [];
 
-    var Boundary = function (from, to, cb) {
+    var Boundary = function (from, to, cb, destroyCb) {
       this.from = from;
       this.to = to;
       this.cb = cb;
+      this.destroyCb = destroyCb;
+
+      this._isInRange = function (x) {
+        return this.from <= x && x <= this.to;
+      };
 
       this.apply = function (prevWidth, newWidth) {
-        var isEnterFromLeft = prevWidth < this.from && this.from <= newWidth && newWidth <= this.to,
-          isEnterFromRight = this.from <= newWidth && newWidth <= this.to && this.to < prevWidth;
+        var isEnter = this._isInRange(newWidth) && !this._isInRange(prevWidth),
+            isLeave = !this._isInRange(newWidth) && this._isInRange(prevWidth);
 
-        if (isEnterFromLeft || isEnterFromRight) {
+        if (isEnter) {
           this.cb.call();
+        }
+
+        if (isLeave && this.destroyCb) {
+          this.destroyCb.call();
         }
       };
 
@@ -99,10 +108,10 @@
       });
     });
 
-    var addResizeBoundary = function (params, cb) {
+    var addResizeBoundary = function (params, cb, destroyCb) {
       var options = helper.extend({}, defaultParams, params);
 
-      boundaries.push(new Boundary(options.from, options.to, cb));
+      boundaries.push(new Boundary(options.from, options.to, cb, destroyCb));
 
       return publicFunctions;
     };
